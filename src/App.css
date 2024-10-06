@@ -1,0 +1,204 @@
+.card.event-card {
+    box-shadow: 2px 2px 16px 2px #ccc;
+    max-width: 830px;
+    width: 100%;
+}
+
+.card.is-loading {
+    opacity: 0.5;
+}
+
+form .form-group {
+    padding: 10px;
+}
+
+.react-datepicker-wrapper {
+    display: block !important;
+}
+
+.loader-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Optional: background overlay */
+    z-index: 9999;
+}
+
+.loader-main {
+    text-align: center;
+}
+
+.loader-icon {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+    display: block;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.my-vegetables-wrapper {
+    max-width: 995px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #f4f6f9;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.list-group {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-group-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+li.dragging.list-group-item {
+    text-align: center;
+    background: transparent;
+    border: dotted #ccc;
+    display: flex;
+    justify-content: center;
+    font-size: 29px;
+    color: #7e7676;
+}
+
+.thumbnail img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.title {
+    font-size: 1.4em;
+    font-weight: 600;
+    flex: 1;
+    margin-left: 30px;
+    color: #333;
+}
+
+.qty-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.qty-wrapper button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.qty-wrapper button:hover {
+    background-color: #45a049;
+}
+
+.qty-wrapper button:last-child {
+    background-color: #f44336;
+}
+
+.qty-wrapper button:last-child:hover {
+    background-color: #e53935;
+}
+
+.qty-wrapper div {
+    margin: 0 15px;
+    font-size: 1.3em;
+    color: #333;
+}
+
+.qty-wrapper strong {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.drag-area{
+    height: 100%;
+    border: dotted #ccc;
+}
+
+.drag-area .drag-text{
+    display: flex;
+    justify-content: center;
+    color: #ccc;
+    height: 100%;
+    align-items: center;
+}
+
+.search-wrapper input{
+    padding-left: 40px;
+}
+
+.input-group-search-icon{
+    display: block;
+    position: absolute;
+    left: 12px;
+    z-index: 999;
+    opacity: 0.5;
+    top: 6px;
+}
+
+
+.sidebar-form {
+    position: fixed;
+    top: 0;
+    right: -600px; /* Hidden off-screen */
+    width: 600px;
+    height: 100%;
+    background-color: #f8f9fa;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+    transition: right 0.3s ease;
+    padding: 20px;
+    z-index: 1051; /* Above overlay */
+}
+
+.sidebar-form.show {
+    right: 0; /* Bring it in from right */
+}
+
+/* Overlay styling */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1050; /* Behind sidebar */
+    display: none; /* Initially hidden */
+}
+
+.overlay.show {
+    display: block; /* Show overlay when active */
+}
