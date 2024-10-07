@@ -34,7 +34,7 @@ const Vegetable = createSlice({
             state.myBucket = newBucket;
             return state;
         },
-        removeItemFromBucket(state, {payload}) {
+        reduceBucketItemQty(state, {payload}) {
             let newBucket = [];
             const itemExists = state.myBucket.find(bucketItem => bucketItem.id === payload.id);
             if (itemExists && itemExists.qty > 0) {
@@ -56,7 +56,11 @@ const Vegetable = createSlice({
         setCurrentPage(state, {payload}) {
             state.currentPage = payload;
             return state;
-        }
+        },
+        removeItemFromBucket(state, {payload}){
+            state.myBucket = state.myBucket.filter(bucketItem => bucketItem.id !== payload.id);
+            return state;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(myVegetableActions.pending, (state) => {
@@ -71,7 +75,7 @@ const Vegetable = createSlice({
         })
         builder.addCase(myVegetables.fulfilled, (state, action) => {
             state.allVegetables = action.payload.rows.filter(item => item.qty = item.initial_qty);
-            state.totalPages = Math.ceil(action.payload.count / 3);
+            state.totalPages = Math.ceil(action.payload.count / 10);
             state.loading = false;
         })
     }
@@ -81,6 +85,7 @@ export const {
     emptyBucket,
     setCurrentPage,
     addItemToBucket,
-    removeItemFromBucket
+    removeItemFromBucket,
+    reduceBucketItemQty,
 } = Vegetable.actions;
 export default Vegetable.reducer;

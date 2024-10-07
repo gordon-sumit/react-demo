@@ -49,7 +49,7 @@ export default function ({show, setShow}) {
         <div id="mySidebarForm" className={`sidebar-form ${show ? 'show' : ''}`}>
             {loading && <Loader/>}
             <h4>Add Vegetables</h4>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">Name</label>
                     <input type="text" className="form-control"

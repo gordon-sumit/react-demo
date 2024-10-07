@@ -1,17 +1,14 @@
-import {useEffect, useState} from "react";
-import {DndProvider, useDrag} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
+import {Fragment, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {myVegetableActions, myVegetables} from "../store/actions/myVegetable.actions";
-import {i} from "vite/dist/node/types.d-aGj9QkWt";
 import AddVeggies from "./addVeggies";
-import {addItemToBucket, removeItemFromBucket} from "../store/reducer/vegetable";
+import {addItemToBucket, emptyBucket, reduceBucketItemQty, removeItemFromBucket} from "../store/reducer/vegetable";
 import Loader from "./loader";
 import withReactContent from "sweetalert2-react-content";
 import Sweetalert2 from "sweetalert2";
 import Pagination from "./pagination";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMagnifyingGlass} from "@fortawesome/free-solid-svg-icons";
+import {faMagnifyingGlass, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 
 export default function () {
     const {
@@ -29,9 +26,12 @@ export default function () {
 
     const dispatch = useDispatch();
     const removeVegetable = (item) => {
-        dispatch(removeItemFromBucket(item))
+        dispatch(reduceBucketItemQty(item))
     }
 
+    const removeVegetableItem = (item) => {
+        dispatch(removeItemFromBucket(item))
+    }
     const dragStart = (item) => {
         setTempDropItem(item);
         setDragging(true)
@@ -66,7 +66,11 @@ export default function () {
     }
     const onSearch = (val) => {
         setSearch(val);
-        dispatch(myVegetables({page: currentPage, search: val}))
+        dispatch(myVegetables({page: 1, search: val}))
+    }
+
+    const emptyBuckets = ()=>{
+        dispatch(emptyBucket())
     }
 
     return <div className="my-vegetables-wrapper">
@@ -75,7 +79,7 @@ export default function () {
                 <button
                     className="border btn btn-info text-bg-dark"
                     onClick={() => dispatch(myVegetableActions(myBucket))}>
-                    Send Message
+                    Send Bucket Info
                 </button>
                 <button
                     className="border btn btn-info text-bg-dark"
@@ -94,13 +98,14 @@ export default function () {
             </div>
         </div>
         <div className="row">
-            <h2>All Vegetables</h2>
             <div className="col-lg-6 position-relative" style={loading ? {height: '450px'} : {}}>
+                <h4>All Vegetables</h4>
                 {loading && <Loader/>}
-                <ul className="list-group">
+                <ul className="list-group default-lists mt-4">
                     {
                         allVegetables.map((item, index) => {
                             return <li draggable={true} onDragStart={() => dragStart(item)} key={index}
+                                       onClick={() => dispatch(addItemToBucket(item))}
                                        className="list-group-item">
                                 <div className="thumbnail">
                                     <img src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${item.thumbnail}`}
@@ -112,32 +117,36 @@ export default function () {
                     }
                 </ul>
             </div>
-            <div className="col-6" onDrop={dragEnd} onDragOver={(e) => e.preventDefault()}>
+            <div className="col-lg-6" onDrop={dragEnd} onDragOver={(e) => e.preventDefault()}>
                 {myBucket.length ?
-                    <div>
-                        <h2>My Bucket</h2>
-                        <ul className="list-group">
+                    <Fragment>
+                        <div className="title-wrapper">
+                            <h4>My Bucket</h4>
+                            <button className="btn btn-outline-danger">Empty Bucket <FontAwesomeIcon icon={faTrashAlt} /></button>
+                        </div>
+                        <ul className="list-group mt-3" style={myBucket.length>10 ? {overflowY: 'scroll',maxHeight:'1160px'} : {}}>
                             {
                                 myBucket.map((item, index) => {
-                                    const bucket = allVegetables.find(bucketItem => bucketItem.id === item.id);
-                                    return <li key={index} className="list-group-item">
+                                    return <li key={index} className="list-group-item position-relative">
                                         <div className="thumbnail">
                                             <img src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${item.thumbnail}`}
                                                  alt=""/>
                                         </div>
                                         <div className="title">{item.name}</div>
                                         <div className="qty-wrapper">
-                                            <button onClick={() => dispatch(addItemToBucket(item))}>+</button>
-                                            <div>{item.qty > 750 ? item.qty / 1000 : item.qty}<strong> {item.qtyType}</strong>
-                                            </div>
                                             <button onClick={() => removeVegetable(item)}>-</button>
+                                            <div>
+                                                {item.qty > 750 ? item.qty / 1000 : item.qty}<strong> {item.qtyType}</strong>
+                                            </div>
+                                            <button onClick={() => dispatch(addItemToBucket(item))}>+</button>
                                         </div>
+                                        <div className="veg-trash-icon" onClick={() => removeVegetableItem(item)}><FontAwesomeIcon icon={faTrashAlt} /></div>
                                     </li>
                                 })
                             }
                             <li className={`list-group-item ${isDragging ? 'dragging' : 'd-none'}`}><span>+</span></li>
                         </ul>
-                    </div> :
+                    </Fragment> :
                     <div className="drag-area">
                         <div className="drag-text">
                             {isDragging ? 'Dragging...' : 'Drag Here'}

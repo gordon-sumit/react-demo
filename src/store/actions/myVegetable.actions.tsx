@@ -8,7 +8,6 @@ import {emptyBucket, setCurrentPage} from "../reducer/vegetable";
 export const myVegetables = createAsyncThunk(
     'my-veggies/get',
     async ({page, search}, {dispatch}) => {
-        console.log(search)
         const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vegetable/${page ? page : 1}${search ? `/${search}` : ''}`,
             {
                 headers: {
@@ -25,6 +24,7 @@ export const myVegetableActions = createAsyncThunk(
     'my-veggies/send',
     async (myData, {dispatch}) => {
         try {
+            if(!myData.length) return;
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export const addVegetableAction = createAsyncThunk(
             )
             if (data.filename) {
                 dispatch(isSuccess(data.message))
-                dispatch(myVegetables())
+                dispatch(myVegetables({page: 1, search: ''}))
             }
             return data;
         } catch (error) {

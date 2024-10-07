@@ -61,11 +61,19 @@ form .form-group {
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
-
+.title-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .list-group {
     list-style: none;
     padding: 0;
     margin: 0;
+}
+
+.list-group.default-lists{
+    cursor: pointer;
 }
 
 .list-group-item {
@@ -96,10 +104,9 @@ li.dragging.list-group-item {
 }
 
 .title {
-    font-size: 1.4em;
-    font-weight: 600;
+    font-size: 1.2em;
     flex: 1;
-    margin-left: 30px;
+    margin-left: 10px;
     color: #333;
 }
 
@@ -109,11 +116,11 @@ li.dragging.list-group-item {
 }
 
 .qty-wrapper button {
-    background-color: #4CAF50;
+    background-color: #f44336;
     border: none;
     color: white;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     font-size: 1.2em;
     cursor: pointer;
     border-radius: 100%;
@@ -121,15 +128,15 @@ li.dragging.list-group-item {
 }
 
 .qty-wrapper button:hover {
-    background-color: #45a049;
+    background-color: #e53935;
 }
 
 .qty-wrapper button:last-child {
-    background-color: #f44336;
+    background-color: #4CAF50;
 }
 
 .qty-wrapper button:last-child:hover {
-    background-color: #e53935;
+    background-color: #45a049;
 }
 
 .qty-wrapper div {
@@ -201,4 +208,18 @@ li.dragging.list-group-item {
 
 .overlay.show {
     display: block; /* Show overlay when active */
+}
+
+.veg-trash-icon{
+    position: absolute;
+    cursor: pointer;
+    right: -13px;
+    top: -13px;
+    display: block;
+    background: #d5d4d4;
+    border-radius: 100%;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+    padding: 8px 0px;
 }
