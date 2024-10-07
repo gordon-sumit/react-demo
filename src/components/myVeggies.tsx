@@ -122,7 +122,7 @@ export default function () {
                     <Fragment>
                         <div className="title-wrapper">
                             <h4>My Bucket</h4>
-                            <button className="btn btn-outline-danger">Empty Bucket <FontAwesomeIcon icon={faTrashAlt} /></button>
+                            <button className="btn btn-outline-danger" onClick={emptyBuckets}>Empty Bucket <FontAwesomeIcon icon={faTrashAlt} /></button>
                         </div>
                         <ul className="list-group mt-3" style={myBucket.length>10 ? {overflowY: 'scroll',maxHeight:'1160px'} : {}}>
                             {
