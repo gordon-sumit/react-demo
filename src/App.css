@@ -59,21 +59,40 @@ form .form-group {
     padding: 30px;
     background-color: #f4f6f9;
     border-radius: 12px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08); /* Softer shadow for a cleaner look */
 }
-.title-wrapper{
+
+.title-wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px; /* Added spacing below the title section */
 }
+
+.title-wrapper h4 {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.title-wrapper .btn-outline-danger {
+    background-color: transparent;
+    color: #e53935;
+    border: 2px solid #e53935;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.title-wrapper .btn-outline-danger:hover {
+    background-color: #e53935;
+    color: #fff;
+}
+
 .list-group {
     list-style: none;
     padding: 0;
     margin: 0;
-}
-
-.list-group.default-lists{
-    cursor: pointer;
 }
 
 .list-group-item {
@@ -85,34 +104,33 @@ form .form-group {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-li.dragging.list-group-item {
-    text-align: center;
-    background: transparent;
-    border: dotted #ccc;
-    display: flex;
-    justify-content: center;
-    font-size: 29px;
-    color: #7e7676;
+.list-group-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Slightly more prominent hover effect */
 }
 
 .thumbnail img {
     width: 60px;
     height: 60px;
     object-fit: contain;
+    border-radius: 8px; /* Optional: Add rounded corners to images */
 }
 
 .title {
     font-size: 1.2em;
     flex: 1;
-    margin-left: 10px;
+    margin-left: 15px;
     color: #333;
+    font-weight: 500;
 }
 
 .qty-wrapper {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .qty-wrapper button {
@@ -123,12 +141,13 @@ li.dragging.list-group-item {
     height: 40px;
     font-size: 1.2em;
     cursor: pointer;
-    border-radius: 100%;
-    transition: background-color 0.3s ease;
+    border-radius: 50%;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .qty-wrapper button:hover {
     background-color: #e53935;
+    box-shadow: 0 3px 8px rgba(229, 57, 53, 0.4); /* Hover effect for button */
 }
 
 .qty-wrapper button:last-child {
@@ -137,18 +156,37 @@ li.dragging.list-group-item {
 
 .qty-wrapper button:last-child:hover {
     background-color: #45a049;
+    box-shadow: 0 3px 8px rgba(69, 160, 73, 0.4); /* Hover effect for + button */
 }
 
 .qty-wrapper div {
     margin: 0 15px;
     font-size: 1.3em;
     color: #333;
+    font-weight: 600;
 }
 
 .qty-wrapper strong {
     font-size: 0.9em;
     color: #777;
 }
+
+.veg-trash-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #f4f6f9;
+    padding: 10px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.veg-trash-icon:hover {
+    background-color: #ffe0e0;
+}
+
+
 
 .drag-area{
     height: 100%;
@@ -222,4 +260,13 @@ li.dragging.list-group-item {
     width: 40px;
     text-align: center;
     padding: 8px 0px;
+}
+
+@media screen and (max-width: 480px)  {
+    li.list-group-item{
+        flex-wrap: wrap;
+        flex-direction: column;
+        text-align: center;
+    }
+
 }
