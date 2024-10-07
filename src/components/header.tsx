@@ -34,10 +34,6 @@ export default function Header() {
                     </li>
                 </ul>
 
-                <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                    <input type="search" className="form-control" placeholder="Search..." aria-label="Search"/>
-                </form>
-
                 <div className="dropdown text-end">
                     <a href="#" onClick={() => setDropdown(!dropdown)}
                        className="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1"
