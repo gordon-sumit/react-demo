@@ -103,7 +103,7 @@ export default function () {
                 {loading && <Loader/>}
                 <ul className="list-group default-lists mt-4">
                     {
-                        allVegetables.map((item, index) => {
+                       !loading && allVegetables.map((item, index) => {
                             return <li draggable={true} onDragStart={() => dragStart(item)} key={index}
                                        onClick={() => dispatch(addItemToBucket(item))}
                                        className="list-group-item">
