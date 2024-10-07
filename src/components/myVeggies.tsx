@@ -27,36 +27,6 @@ export default function () {
     const [show, setShow] = useState(false);
     const [search, setSearch] = useState('');
 
-    const vegetableList = [
-        {
-            id: 45,
-            name: 'Potato',
-            qty: 250,
-            qtyType: 'gm',
-            img: 'https://static.vecteezy.com/system/resources/previews/028/167/451/original/vibrant-hand-drawn-potato-cartoon-illustrating-freshness-ai-generated-free-png.png'
-        },
-        {
-            id: 55,
-            name: 'Tomato',
-            qty: 250,
-            qtyType: 'gm',
-            img: 'https://static.vecteezy.com/system/resources/previews/024/063/019/original/cartoon-tomato-outline-png.png'
-        },
-        {
-            id: 35,
-            name: 'chilli',
-            qty: 250,
-            qtyType: 'gm',
-            img: 'https://png.pngtree.com/png-vector/20221224/ourmid/pngtree-vector-illustration-of-spicy-chili-pepper-with-red-flame-cartoon-for-png-image_6536087.png'
-        },
-        {
-            id: 323,
-            name: 'Lady Finger',
-            qty: 250,
-            qtyType: 'gm',
-            img: 'https://png.pngtree.com/png-clipart/20220116/original/pngtree-okra-of-hand-painted-vegetable-and-fruit-series-png-image_7118960.png'
-        },
-    ];
     const dispatch = useDispatch();
     const removeVegetable = (item) => {
         dispatch(removeItemFromBucket(item))
@@ -152,10 +122,10 @@ export default function () {
                                     const bucket = allVegetables.find(bucketItem => bucketItem.id === item.id);
                                     return <li key={index} className="list-group-item">
                                         <div className="thumbnail">
-                                            <img src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${bucket.thumbnail}`}
+                                            <img src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${item.thumbnail}`}
                                                  alt=""/>
                                         </div>
-                                        <div className="title">{bucket.name}</div>
+                                        <div className="title">{item.name}</div>
                                         <div className="qty-wrapper">
                                             <button onClick={() => dispatch(addItemToBucket(item))}>+</button>
                                             <div>{item.qty > 750 ? item.qty / 1000 : item.qty}<strong> {item.qtyType}</strong>

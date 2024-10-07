@@ -23,7 +23,13 @@ const Vegetable = createSlice({
                         : bucketItem
                 );
             } else {
-                newBucket = [...state.myBucket, {id: payload.id, name: payload.name, qty: payload.qty, qtyType: 'gm'}];
+                newBucket = [...state.myBucket, {
+                    id: payload.id,
+                    name: payload.name,
+                    qty: payload.qty,
+                    qtyType: 'gm',
+                    thumbnail: payload.thumbnail
+                }];
             }
             state.myBucket = newBucket;
             return state;
