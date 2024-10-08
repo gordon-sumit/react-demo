@@ -2,7 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import {isError} from "../reducer/errorReducer";
 import {isSuccess} from "../reducer/form";
-import {emptyBucket, setCurrentPage} from "../reducer/vegetable";
+import {emptyBucket, removeItemFromMain, setCurrentPage} from "../reducer/vegetable";
 
 
 export const myVegetables = createAsyncThunk(
@@ -20,11 +20,27 @@ export const myVegetables = createAsyncThunk(
     }
 );
 
+export const removeItemFromDefault = createAsyncThunk('my-veggies/delete',
+    async (id, {dispatch}) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+        const {data} = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/vegetable/delete/${id}`,config);
+        if(data){
+            console.log('ppppppp',data)
+            dispatch(isSuccess('Item Deleted!'))
+            dispatch(myVegetables({page:1}))
+        }
+        return data;
+    });
+
 export const myVegetableActions = createAsyncThunk(
     'my-veggies/send',
     async (myData, {dispatch}) => {
         try {
-            if(!myData.length) return;
+            if (!myData.length) return;
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
