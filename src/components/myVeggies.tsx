@@ -108,7 +108,7 @@ export default function () {
                                        onClick={() => dispatch(addItemToBucket(item))}
                                        className="list-group-item">
                                 <div className="thumbnail">
-                                    <img src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${item.thumbnail}`}
+                                    <img src={item.thumbnail}
                                          alt={item.name}/>
                                 </div>
                                 <div className="title">{item.name}</div>
@@ -129,7 +129,7 @@ export default function () {
                                 myBucket.map((item, index) => {
                                     return <li key={index} className="list-group-item position-relative">
                                         <div className="thumbnail">
-                                            <img src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${item.thumbnail}`}
+                                            <img src={item.thumbnail}
                                                  alt=""/>
                                         </div>
                                         <div className="title">{item.name}</div>
