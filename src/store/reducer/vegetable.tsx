@@ -10,25 +10,27 @@ const Vegetable = createSlice({
             return state;
         },
         addItemToBucket(state, {payload}) {
+            console.log(payload, 'ppp')
             let newBucket = [];
-            const itemExists = state.myBucket.find(bucketItem => bucketItem.id === payload.id);
+            const payloadItem = payload.item
+            const itemExists = state.myBucket.find(bucketItem => bucketItem.id === payloadItem.id);
             if (itemExists) {
                 newBucket = state.myBucket.map(bucketItem =>
-                    bucketItem.id === payload.id
+                    bucketItem.id === payloadItem.id
                         ? {
                             ...bucketItem,
-                            qty: bucketItem.qty + 250,
-                            qtyType: (bucketItem.qty + 250) / 1000 > 0.75 ? 'kg' : 'gm',
+                            qty: payload.direct ? payloadItem.qty : bucketItem.qty + 50,
+                            qtyType: (payload.direct ? payloadItem.qty : bucketItem.qty + 50) / 1000 > 0.95 ? 'kg' : 'gm',
                         }
                         : bucketItem
                 );
             } else {
                 newBucket = [...state.myBucket, {
-                    id: payload.id,
-                    name: payload.name,
-                    qty: payload.qty,
+                    id: payloadItem.id,
+                    name: payloadItem.name,
+                    qty: payloadItem.qty,
                     qtyType: 'gm',
-                    thumbnail: payload.thumbnail
+                    thumbnail: payloadItem.thumbnail
                 }];
             }
             state.myBucket = newBucket;
@@ -41,8 +43,8 @@ const Vegetable = createSlice({
                 newBucket = state.myBucket.map(bucketItem =>
                     bucketItem.id === payload.id
                         ? {
-                            ...bucketItem, qty: bucketItem.qty - 250,
-                            qtyType: (bucketItem.qty - 250) / 1000 > 0.75 ? 'kg' : 'gm'
+                            ...bucketItem, qty: bucketItem.qty - 50,
+                            qtyType: (bucketItem.qty - 50) / 1000 > 0.95 ? 'kg' : 'gm'
                         }
                         : bucketItem
                 );
@@ -57,7 +59,7 @@ const Vegetable = createSlice({
             state.currentPage = payload;
             return state;
         },
-        removeItemFromBucket(state, {payload}){
+        removeItemFromBucket(state, {payload}) {
             state.myBucket = state.myBucket.filter(bucketItem => bucketItem.id !== payload.id);
             return state;
         },

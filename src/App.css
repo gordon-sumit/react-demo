@@ -127,49 +127,12 @@ form .form-group {
     font-weight: 500;
 }
 
-.qty-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-.qty-wrapper button {
-    background-color: #f44336;
-    border: none;
-    color: white;
-    width: 40px;
-    height: 40px;
-    font-size: 1.2em;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.qty-wrapper button:hover {
-    background-color: #e53935;
-    box-shadow: 0 3px 8px rgba(229, 57, 53, 0.4); /* Hover effect for button */
-}
-
-.qty-wrapper button:last-child {
-    background-color: #4CAF50;
-}
-
-.qty-wrapper button:last-child:hover {
-    background-color: #45a049;
-    box-shadow: 0 3px 8px rgba(69, 160, 73, 0.4); /* Hover effect for + button */
-}
-
-.qty-wrapper div {
-    margin: 0 15px;
-    font-size: 1.3em;
-    color: #333;
-    font-weight: 600;
-}
-
-.qty-wrapper strong {
-    font-size: 0.9em;
-    color: #777;
-}
 
 .veg-trash-icon {
     display: flex;
@@ -329,4 +292,97 @@ form .form-group {
         text-align: center;
     }
 
+}
+
+
+/* General styles for the wrapper */
+.qty-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Spacing between elements */
+}
+
+.qty-wrapper li{
+    list-style: none;
+}
+/* Button styles */
+.qty-btn {
+    background-color: #f44336; /* Red color */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.qty-btn:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+
+.qty-btn:last-child {
+    background-color: #4CAF50;
+}
+
+.qty-btn:last-child:hover {
+    background-color: #45a049;
+    box-shadow: 0 3px 8px rgba(69, 160, 73, 0.4); /* Hover effect for + button */
+}
+
+/* Input field and unit (gm) wrapper */
+.qty-input-wrapper {
+    gap: 5px;
+    flex-wrap: nowrap;
+    width: 100px;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+/* Input styling */
+.qty-input {
+    width: 60px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0;
+    margin: 0;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    transition: border-color 0.2s ease;
+}
+
+.qty-input:focus {
+    outline: none;
+    border-color: #4caf50; /* Green border on focus */
+}
+
+/* Strong tag for the "gm" text */
+.qty-input-wrapper strong {
+    font-size: 18px;
+    color: #333;
+}
+
+/* Responsive styling */
+@media (max-width: 500px) {
+    .qty-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+    }
+
+    .qty-input {
+        width: 50px;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    .qty-input-wrapper strong {
+        font-size: 16px;
+    }
 }

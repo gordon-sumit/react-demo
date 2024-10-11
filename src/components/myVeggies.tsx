@@ -9,6 +9,7 @@ import Sweetalert2 from "sweetalert2";
 import Pagination from "./pagination";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import {parse} from "@fortawesome/fontawesome-svg-core";
 
 export default function () {
     const {
@@ -39,11 +40,11 @@ export default function () {
     }
     const dragStart = (item) => {
         setTempDropItem(item);
-        setDragging(true)
+       // setDragging(true)
     }
 
     const dragEnd = () => {
-        dispatch(addItemToBucket(tempDropItem))
+        dispatch(addItemToBucket({item: tempDropItem, direct: false}))
         setTempDropItem(null)
         setDragging(false)
     }
@@ -83,6 +84,13 @@ export default function () {
         setShow('confirm')
     }
 
+    const onQtyChange = (qty, item) => {
+        if (qty < 1) return false;
+        const tempItem = {...item};
+        tempItem.qty = parseFloat(qty);
+        dispatch(addItemToBucket({item: tempItem, direct: true}))
+    }
+
     return <div className="my-vegetables-wrapper">
         <div className="row mb-4 text-center ">
             <div className="send-info">
@@ -117,10 +125,12 @@ export default function () {
                             return <li draggable={true} onDragStart={() => dragStart(item)} key={index}
                                        className="list-group-item">
                                 <div className="thumbnail">
-                                    <img src={item.thumbnail} onClick={() => dispatch(addItemToBucket(item))}
+                                    <img src={item.thumbnail}
+                                         onClick={() => dispatch(addItemToBucket({item, direct: false}))}
                                          alt={item.name}/>
                                 </div>
-                                <div className="title" onClick={() => dispatch(addItemToBucket(item))}>{item.name}</div>
+                                <div className="title"
+                                     onClick={() => dispatch(addItemToBucket({item, direct: false}))}>{item.name}</div>
                                 <div className="veg-trash-icon" onClick={() => showConfirmBox(item)}>
                                     <FontAwesomeIcon icon={faTrashAlt}/>
                                 </div>
@@ -129,7 +139,7 @@ export default function () {
                     }
                 </ul>
             </div>
-            <div className="col-lg-6" onDrop={dragEnd} onDragOver={(e) => e.preventDefault()}>
+            <div className="col-lg-6" onDragLeave={()=>setDragging(false)} onDragEnter={()=>setDragging(true)} onDrop={dragEnd} onDragOver={(e) => e.preventDefault()}>
                 {myBucket.length ?
                     <Fragment>
                         <div className="title-wrapper">
@@ -147,13 +157,18 @@ export default function () {
                                                  alt=""/>
                                         </div>
                                         <div className="title">{item.name}</div>
-                                        <div className="qty-wrapper">
-                                            <button onClick={() => removeVegetable(item)}>-</button>
-                                            <div>
-                                                {item.qty > 750 ? item.qty / 1000 : item.qty}<strong> {item.qtyType}</strong>
-                                            </div>
-                                            <button onClick={() => dispatch(addItemToBucket(item))}>+</button>
-                                        </div>
+                                        <ul className="qty-wrapper">
+                                            <li className="qty-btn" onClick={() => removeVegetable(item)}>-</li>
+                                            <li className="qty-input-wrapper">
+                                                {/*<span onClick={()=>setShow('input')}>{item.qty > 950 ? item.qty / 1000 : item.qty}</span>*/}
+                                                <input type="text"
+                                                       className={`${show === 'input' ? 'd-block' : ''} qty-input`}
+                                                       value={item.qty > 950 ? item.qty / 1000 : item.qty}
+                                                       onChange={(e) => onQtyChange(e.target.value, item)}/>
+                                                <strong> {item.qtyType}</strong>
+                                            </li>
+                                            <li className="qty-btn" onClick={() => dispatch(addItemToBucket({item, direct: false}))}>+</li>
+                                        </ul>
                                         <div className="veg-trash-icon" onClick={() => removeVegetableItem(item)}>
                                             <FontAwesomeIcon icon={faTrashAlt}/></div>
                                     </li>
