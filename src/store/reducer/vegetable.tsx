@@ -10,17 +10,17 @@ const Vegetable = createSlice({
             return state;
         },
         addItemToBucket(state, {payload}) {
-            console.log(payload, 'ppp')
             let newBucket = [];
             const payloadItem = payload.item
             const itemExists = state.myBucket.find(bucketItem => bucketItem.id === payloadItem.id);
+            const incrementBy = payloadItem.qtyType !== 'Rs' ? 50 : 5;
             if (itemExists) {
                 newBucket = state.myBucket.map(bucketItem =>
                     bucketItem.id === payloadItem.id
                         ? {
                             ...bucketItem,
-                            qty: payload.direct ? payloadItem.qty : bucketItem.qty + 50,
-                            qtyType: (payload.direct ? payloadItem.qty : bucketItem.qty + 50) / 1000 > 0.95 ? 'kg' : 'gm',
+                            qty: payload.direct ? payloadItem.qty : bucketItem.qty + incrementBy,
+                            qtyType: payloadItem.qtyType !== 'Rs' ? ((payload.direct ? payloadItem.qty : bucketItem.qty + incrementBy) / 1000 > 0.95 ? 'kg' : 'gm') : 'Rs',
                         }
                         : bucketItem
                 );
@@ -29,7 +29,7 @@ const Vegetable = createSlice({
                     id: payloadItem.id,
                     name: payloadItem.name,
                     qty: payloadItem.qty,
-                    qtyType: 'gm',
+                    qtyType: payloadItem.qtyType,
                     thumbnail: payloadItem.thumbnail
                 }];
             }
@@ -39,12 +39,13 @@ const Vegetable = createSlice({
         reduceBucketItemQty(state, {payload}) {
             let newBucket = [];
             const itemExists = state.myBucket.find(bucketItem => bucketItem.id === payload.id);
+            const decrementBy = payload.qtyType !== 'Rs' ? 50 : 5;
             if (itemExists && itemExists.qty > 0) {
                 newBucket = state.myBucket.map(bucketItem =>
                     bucketItem.id === payload.id
                         ? {
-                            ...bucketItem, qty: bucketItem.qty - 50,
-                            qtyType: (bucketItem.qty - 50) / 1000 > 0.95 ? 'kg' : 'gm'
+                            ...bucketItem, qty: bucketItem.qty - decrementBy,
+                            qtyType: payload.qtyType !== 'Rs' ? (bucketItem.qty - decrementBy) / 1000 > 0.95 ? 'kg' : 'gm' : 'Rs'
                         }
                         : bucketItem
                 );

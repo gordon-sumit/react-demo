@@ -10,6 +10,7 @@ import Pagination from "./pagination";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faMagnifyingGlass, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import {parse} from "@fortawesome/fontawesome-svg-core";
+import Confirm from "./modals/confirm";
 
 export default function () {
     const {
@@ -23,9 +24,29 @@ export default function () {
     const [tempDropItem, setTempDropItem] = useState(null);
     const [isDragging, setDragging] = useState(false);
     const [show, setShow] = useState('');
+    const [qtyType, setQtyType] = useState('gm');
     const [search, setSearch] = useState('');
 
     const dispatch = useDispatch();
+
+    const onAddVegetableItem = (item) => {
+        const itemExists = myBucket.find(bucketItem => bucketItem.id === item.id);
+        if (itemExists) {
+            const temp = {...item};
+            temp.qtyType = itemExists.qtyType;
+            dispatch(addItemToBucket({item: temp, direct: false}));
+        } else {
+            setTempDropItem(item);
+            setShow('addOption')
+        }
+    }
+
+    const onConfirmAdd = (item, setShow) => {
+        setShow();
+        const temp = {...item};
+        temp.qtyType = qtyType;
+        dispatch(addItemToBucket({item: temp, direct: false}));
+    }
     const removeVegetable = (item) => {
         dispatch(reduceBucketItemQty(item))
     }
@@ -34,13 +55,13 @@ export default function () {
         dispatch(removeItemFromBucket(item))
     }
 
-    const removeVegetableItemFromDefault = (id, setShow) => {
+    const onConfirmDelete = (id, setShow) => {
         setShow();
         dispatch(removeItemFromDefault(id))
     }
     const dragStart = (item) => {
         setTempDropItem(item);
-       // setDragging(true)
+        // setDragging(true)
     }
 
     const dragEnd = () => {
@@ -81,7 +102,7 @@ export default function () {
 
     const showConfirmBox = (item) => {
         setTempDropItem(item);
-        setShow('confirm')
+        setShow('confirmDelete')
     }
 
     const onQtyChange = (qty, item) => {
@@ -123,14 +144,14 @@ export default function () {
                     {
                         !loading && allVegetables.map((item, index) => {
                             return <li draggable={true} onDragStart={() => dragStart(item)} key={index}
-                                       className="list-group-item">
+                                       className="list-group-item ">
                                 <div className="thumbnail">
                                     <img src={item.thumbnail}
-                                         onClick={() => dispatch(addItemToBucket({item, direct: false}))}
+                                         onClick={() => onAddVegetableItem(item)}
                                          alt={item.name}/>
                                 </div>
                                 <div className="title"
-                                     onClick={() => dispatch(addItemToBucket({item, direct: false}))}>{item.name}</div>
+                                     onClick={() => onAddVegetableItem(item)}>{item.name}</div>
                                 <div className="veg-trash-icon" onClick={() => showConfirmBox(item)}>
                                     <FontAwesomeIcon icon={faTrashAlt}/>
                                 </div>
@@ -139,7 +160,8 @@ export default function () {
                     }
                 </ul>
             </div>
-            <div className="col-lg-6" onDragLeave={()=>setDragging(false)} onDragEnter={()=>setDragging(true)} onDrop={dragEnd} onDragOver={(e) => e.preventDefault()}>
+            <div className="col-lg-6" onDragLeave={() => setDragging(false)} onDragEnter={() => setDragging(true)}
+                 onDrop={dragEnd} onDragOver={(e) => e.preventDefault()}>
                 {myBucket.length ?
                     <Fragment>
                         <div className="title-wrapper">
@@ -160,14 +182,15 @@ export default function () {
                                         <ul className="qty-wrapper">
                                             <li className="qty-btn" onClick={() => removeVegetable(item)}>-</li>
                                             <li className="qty-input-wrapper">
-                                                {/*<span onClick={()=>setShow('input')}>{item.qty > 950 ? item.qty / 1000 : item.qty}</span>*/}
                                                 <input type="text"
                                                        className={`${show === 'input' ? 'd-block' : ''} qty-input`}
-                                                       value={item.qty > 950 ? item.qty / 1000 : item.qty}
+                                                       value={item.qty > 950 && item.qtyType !== 'Rs' ? item.qty / 1000 : item.qty}
                                                        onChange={(e) => onQtyChange(e.target.value, item)}/>
                                                 <strong> {item.qtyType}</strong>
                                             </li>
-                                            <li className="qty-btn" onClick={() => dispatch(addItemToBucket({item, direct: false}))}>+</li>
+                                            <li className="qty-btn"
+                                                onClick={() => dispatch(addItemToBucket({item, direct: false}))}>+
+                                            </li>
                                         </ul>
                                         <div className="veg-trash-icon" onClick={() => removeVegetableItem(item)}>
                                             <FontAwesomeIcon icon={faTrashAlt}/></div>
@@ -190,18 +213,25 @@ export default function () {
             <Pagination totalPages={totalPages} currentPage={currentPage} paginate={(page) => paginate(page)}/>
         </div>
         <AddVeggies show={show === 'addForm'} setShow={() => setShow('')}/>
-        {show === 'confirm' &&
-            <div className="confirm-dialog-wrapper">
-                <div className="confirm-box">
-                    <div className="title">Are you sure you want to delete this item?</div>
-                    <div className="button-group">
-                        <button className="btn btn-danger"
-                                onClick={() => removeVegetableItemFromDefault(tempDropItem.id, () => setShow(''))}>Yes
-                        </button>
-                        <button className="btn btn-outline-secondary" onClick={() => setShow('')}>No</button>
-                    </div>
-                </div>
-            </div>
+        {show === 'confirmDelete'
+            &&
+            <Confirm
+                message={'Are you sure you want to delete this item?'}
+                onYesClick={() => onConfirmDelete(tempDropItem.id, () => setShow(''))}
+                onCancelClick={() => setShow('')}
+            />
+        }
+
+        {
+            show === 'addOption'
+            &&
+            <Confirm
+                message={'Please select the option.'}
+                options={true}
+                onYesClick={() => onConfirmAdd(tempDropItem, () => setShow(''))}
+                onCancelClick={() => setShow('')}
+                onOptionUpdate={(option) => setQtyType(option)}
+            />
         }
     </div>
 }
