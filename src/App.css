@@ -62,6 +62,15 @@ form .form-group {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08); /* Softer shadow for a cleaner look */
 }
 
+.header-bar{
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-bar select{
+    width: 100px;
+}
+
 .title-wrapper {
     display: flex;
     justify-content: space-between;

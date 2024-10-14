@@ -26,6 +26,7 @@ export default function () {
     const [show, setShow] = useState('');
     const [qtyType, setQtyType] = useState('gm');
     const [search, setSearch] = useState('');
+    const [order, setOrder] = useState('desc');
 
     const dispatch = useDispatch();
 
@@ -85,15 +86,15 @@ export default function () {
     }, [message])
 
     useEffect(() => {
-        dispatch(myVegetables({page: 1}))
-    }, []);
+        dispatch(myVegetables({page: 1, order}))
+    }, [order]);
 
     const paginate = (page) => {
-        dispatch(myVegetables({page, search: search}))
+        dispatch(myVegetables({page, order, search: search}))
     }
     const onSearch = (val) => {
         setSearch(val);
-        dispatch(myVegetables({page: 1, search: val}))
+        dispatch(myVegetables({page: 1, order, search: val}))
     }
 
     const emptyBuckets = () => {
@@ -138,7 +139,14 @@ export default function () {
         </div>
         <div className="row">
             <div className="col-lg-6 position-relative" style={loading ? {height: '450px'} : {}}>
-                <h4>All Vegetables</h4>
+                <div className="header-bar">
+                    <h4>All Vegetables</h4>
+                    <select id="orderBy" onChange={(e) => setOrder(e.target.value)}
+                            className="form-control">
+                        <option value="asc">ASC</option>
+                        <option value="desc">DESC</option>
+                    </select>
+                </div>
                 {loading && <Loader/>}
                 <ul className="list-group default-lists mt-4">
                     {

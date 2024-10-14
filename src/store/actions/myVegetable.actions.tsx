@@ -2,13 +2,13 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
 import {isError} from "../reducer/errorReducer";
 import {isSuccess} from "../reducer/form";
-import {emptyBucket, removeItemFromMain, setCurrentPage} from "../reducer/vegetable";
+import {emptyBucket, setCurrentPage} from "../reducer/vegetable";
 
 
 export const myVegetables = createAsyncThunk(
     'my-veggies/get',
-    async ({page, search}, {dispatch}) => {
-        const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vegetable/${page ? page : 1}${search ? `/${search}` : ''}`,
+    async ({page, order, search}, {dispatch}) => {
+        const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vegetable/${page ? page : 1}/${order}${search ? `/${search}` : ''}`,
             {
                 headers: {
                     'ngrok-skip-browser-warning': 'abc'
