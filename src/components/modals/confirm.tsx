@@ -11,7 +11,7 @@ export default function ({message, options, onYesClick, onCancelClick, onOptionU
                             <label
                                 htmlFor="rs">Price</label>
                         </li>
-                        <li className="list-group-item">
+                        <li className="">
                             <input type="radio" onClick={() => onOptionUpdate('gm')} name="type" id="gm"/>
                             <label
                                 htmlFor="gm">Quantity</label>

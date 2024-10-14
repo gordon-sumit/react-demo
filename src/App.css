@@ -301,10 +301,14 @@ ul.options-group li label{
 }
 
 @media screen and (max-width: 480px)  {
-    .default-lists li.list-group-item{
+    li.list-group-item{
         flex-wrap: wrap;
         flex-direction: column;
         text-align: center;
+    }
+
+    li.list-group-item .title{
+        margin-bottom: 10px;
     }
 
 }
