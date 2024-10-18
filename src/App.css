@@ -414,3 +414,58 @@ ul.options-group li label{
         font-size: 16px;
     }
 }
+
+/*microhone css*/
+.microphone-wrapper {
+    display: inline-block;
+}
+
+
+
+.microphone-icon {
+    cursor: pointer;
+    transition: background-color 0.25s;
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    color: #383838;
+    border: none;
+    border-radius: 50%;
+    margin-left: 10px;
+    background: #D9D9D9;
+    z-index: 1;
+}
+.icon-mic{
+    font-size: 18px;
+}
+.microphone-icon::before {
+    content: "";
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    background-color: inherit;
+    z-index: -1;
+}
+
+.listening {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+
+.listening::before {
+    animation: listening 1.3s infinite;
+}
+
+@keyframes listening {
+    from {
+        opacity: 0.25;
+    }
+    to {
+        transform: scale(2);
+        opacity: 0;
+    }
+}

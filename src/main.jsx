@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import 'regenerator-runtime/runtime';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App'
 import "react-datepicker/dist/react-datepicker.css";
@@ -12,6 +13,7 @@ import RegisterUser from "./components/registerUser";
 import Profiles from "./components/profiles";
 import PrivateRoute from "./components/privateRoute";
 import MyVeggies from "./components/myVeggies";
+
 
 const accessToken = localStorage.getItem('userToken');
 //wucyva@mailinator.com

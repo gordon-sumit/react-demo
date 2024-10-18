@@ -8,9 +8,9 @@ import withReactContent from "sweetalert2-react-content";
 import Sweetalert2 from "sweetalert2";
 import Pagination from "./pagination";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMagnifyingGlass, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
-import {parse} from "@fortawesome/fontawesome-svg-core";
+import {faMagnifyingGlass, faMicrophone, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
 import Confirm from "./modals/confirm";
+import AudioComponent from "./AudioComponent";
 
 export default function () {
     const {
@@ -20,15 +20,15 @@ export default function () {
         myBucket,
         message,
         loading
-    } = useSelector(state => state.root.Vegetable)
+    } = useSelector(state => state.root.Vegetable);
+
+    const dispatch = useDispatch();
     const [tempDropItem, setTempDropItem] = useState(null);
     const [isDragging, setDragging] = useState(false);
     const [show, setShow] = useState('');
     const [qtyType, setQtyType] = useState('gm');
     const [search, setSearch] = useState('');
     const [order, setOrder] = useState('desc');
-
-    const dispatch = useDispatch();
 
     const onAddVegetableItem = (item) => {
         const itemExists = myBucket.find(bucketItem => bucketItem.id === item.id);
@@ -86,8 +86,8 @@ export default function () {
     }, [message])
 
     useEffect(() => {
-        dispatch(myVegetables({page: 1, order}))
-    }, [order]);
+        dispatch(myVegetables({page: 1, order, search}))
+    }, [order, search]);
 
     const paginate = (page) => {
         dispatch(myVegetables({page, order, search: search}))
@@ -126,6 +126,7 @@ export default function () {
                     onClick={() => setShow('addForm')}>
                     Add New
                 </button>
+                <AudioComponent setSearch={(val) => setSearch(val)}/>
             </div>
         </div>
         <div className="row">
@@ -133,7 +134,7 @@ export default function () {
                 <div className="input-group-prepend position-relative">
                     <span className="input-group-search-icon"><FontAwesomeIcon icon={faMagnifyingGlass}/></span>
                 </div>
-                <input type="text" className="form-control" onChange={(e) => onSearch(e.target.value)}
+                <input type="text" value={search} className="form-control" onChange={(e) => onSearch(e.target.value)}
                        aria-label="Amount (to the nearest dollar)"/>
             </div>
         </div>
