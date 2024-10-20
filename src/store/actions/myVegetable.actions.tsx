@@ -38,7 +38,7 @@ export const removeItemFromDefault = createAsyncThunk('my-veggies/delete',
 
 export const myVegetableActions = createAsyncThunk(
     'my-veggies/send',
-    async (myData, {dispatch}) => {
+    async ({myData,sendType}, {dispatch}) => {
         try {
             if (!myData.length) return;
             const config = {
@@ -47,7 +47,7 @@ export const myVegetableActions = createAsyncThunk(
                 },
             }
             const {data} = await axios.post(
-                `${import.meta.env.VITE_BACKEND_URL}/vegetable/send-message`,
+                `${import.meta.env.VITE_BACKEND_URL}/vegetable/send-message-${sendType}`,
                 myData,
                 config
             )

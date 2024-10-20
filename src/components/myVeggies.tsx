@@ -8,9 +8,18 @@ import withReactContent from "sweetalert2-react-content";
 import Sweetalert2 from "sweetalert2";
 import Pagination from "./pagination";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMagnifyingGlass, faMicrophone, faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import {
+    faEnvelope,
+    faIndianRupeeSign,
+    faMagnifyingGlass,
+    faMicrophone,
+    faRupee,
+    faScaleBalanced,
+    faTrashAlt
+} from "@fortawesome/free-solid-svg-icons";
 import Confirm from "./modals/confirm";
 import AudioComponent from "./AudioComponent";
+import {faSlack, faWhatsapp} from "@fortawesome/free-brands-svg-icons";
 
 export default function () {
     const {
@@ -27,6 +36,7 @@ export default function () {
     const [isDragging, setDragging] = useState(false);
     const [show, setShow] = useState('');
     const [qtyType, setQtyType] = useState('gm');
+    const [sendOption, setSendOption] = useState('whatsapp');
     const [search, setSearch] = useState('');
     const [order, setOrder] = useState('desc');
 
@@ -47,6 +57,11 @@ export default function () {
         const temp = {...item};
         temp.qtyType = qtyType;
         dispatch(addItemToBucket({item: temp, direct: false}));
+    }
+
+    const onConfirmSend = (setShow) => {
+        setShow();
+        dispatch(myVegetableActions({myData: myBucket, sendType: sendOption}))
     }
     const removeVegetable = (item) => {
         dispatch(reduceBucketItemQty(item))
@@ -117,8 +132,9 @@ export default function () {
         <div className="row mb-4 text-center ">
             <div className="send-info">
                 <button
+                    disabled={!myBucket.length}
                     className="border btn btn-info text-bg-dark"
-                    onClick={() => dispatch(myVegetableActions(myBucket))}>
+                    onClick={() => setShow('sendOption')}>
                     Send Bucket Info
                 </button>
                 <button
@@ -236,10 +252,32 @@ export default function () {
             &&
             <Confirm
                 message={'Please select the option.'}
-                options={true}
+                defaultValue={qtyType}
+                options={[{name: 'Price', value: 'Rs', icon: faIndianRupeeSign}, {
+                    name: 'Quantity',
+                    value: 'gm',
+                    icon: faScaleBalanced
+                }]}
                 onYesClick={() => onConfirmAdd(tempDropItem, () => setShow(''))}
                 onCancelClick={() => setShow('')}
                 onOptionUpdate={(option) => setQtyType(option)}
+            />
+        }
+
+        {
+            show === 'sendOption'
+            &&
+            <Confirm
+                message={'Please select the send options.'}
+                defaultValue={sendOption}
+                options={[
+                    {name: 'WhatsApp', value: 'whatsapp', icon: faWhatsapp},
+                    {name: 'Slack', value: 'slack', icon: faSlack},
+                    {name: 'Mail', value: 'mail', icon: faEnvelope}
+                ]}
+                onYesClick={() => onConfirmSend(() => setShow(''))}
+                onCancelClick={() => setShow('')}
+                onOptionUpdate={(option) => setSendOption(option)}
             />
         }
     </div>

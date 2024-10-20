@@ -297,16 +297,24 @@ input::-webkit-inner-spin-button {
 ul.options-group {
     padding: 0;
     margin: 0 auto;
-    width: 106px;
+    width: 120px;
 }
 
 ul.options-group li {
-    display: table;
+    display: flex;
     padding: 2px 0;
+}
+
+ul.options-group li input{
+    width: 17px;
 }
 
 ul.options-group li label{
     margin-left: 10px;
+}
+
+ul.options-group li svg{
+    font-size: 38px;
 }
 
 @media screen and (max-width: 480px)  {

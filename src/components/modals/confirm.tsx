@@ -1,4 +1,7 @@
-export default function ({message, options, onYesClick, onCancelClick, onOptionUpdate}) {
+import {faTrashAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+
+export default function ({message, defaultValue, options, onYesClick, onCancelClick, onOptionUpdate}) {
 
     return <div className="confirm-dialog-wrapper">
         <div className="confirm-box">
@@ -6,16 +9,14 @@ export default function ({message, options, onYesClick, onCancelClick, onOptionU
             {options &&
                 <div className="options mb-3">
                     <ul className="options-group">
-                        <li className="">
-                            <input type="radio" onClick={() => onOptionUpdate('Rs')} name="type" id="rs"/>
-                            <label
-                                htmlFor="rs">Price</label>
-                        </li>
-                        <li className="">
-                            <input type="radio" onClick={() => onOptionUpdate('gm')} name="type" id="gm"/>
-                            <label
-                                htmlFor="gm">Quantity</label>
-                        </li>
+                        {options.map((item) =>
+                            <li className="">
+                                <input type="radio" checked={defaultValue === item.value}
+                                       onClick={() => onOptionUpdate(item.value)} name="type" id={item.value}/>
+                                <label
+                                    htmlFor={item.value}><FontAwesomeIcon icon={item.icon}/></label>
+                            </li>
+                        )}
                     </ul>
                 </div>
             }
