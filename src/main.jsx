@@ -16,19 +16,6 @@ import MyVeggies from "./components/myVeggies";
 
 
 const accessToken = localStorage.getItem('userToken');
-//wucyva@mailinator.com
-const authChildren = [
-    {
-        path: "/login",
-        element: <Login/>,
-        errorElement: <Navigate to={'/login'}/>,
-    },
-    {
-        path: "/register",
-        element: <RegisterUser/>,
-    },
-];
-
 const children = [
     {
         path: "/profiles",
@@ -41,7 +28,7 @@ const children = [
     {
         path: "/login",
         element: <Login/>,
-        //errorElement: <Navigate to={'/login'}/>,
+        errorElement: <Navigate to={'/login'}/>,
     },
     {
         path: "/register",
@@ -52,7 +39,7 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <App/>,
-        //errorElement: !accessToken ? <Navigate to={'/login'}/> :<Navigate to={'/'}/>,
+        errorElement: !accessToken ? <Navigate to={'/login'}/> :<Navigate to={'/'}/>,
         children: children
     },
 ]);

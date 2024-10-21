@@ -15,15 +15,15 @@ function App() {
         dispatch(saveToken())
     },[userToken])
 
-    // if (!userToken) {
-    //     return <div className='container mt-3'>
-    //         <Routes>
-    //         <Route path='/' element={<Navigate to={'/login'}/>} />
-    //         {/*<Route path='/register' element={<RegisterUser/>}/>*/}
-    //     </Routes>
-    //         <Outlet/>
-    //     </div>
-    // }
+    if (!userToken) {
+        return <div className='container mt-3'>
+            <Routes>
+            <Route path='/' element={<Navigate to={'/login'}/>} />
+            <Route path='/register' element={<RegisterUser/>}/>
+        </Routes>
+            <Outlet/>
+        </div>
+    }
 
     return (
         <div className='container mt-3'>
