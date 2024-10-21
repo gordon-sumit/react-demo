@@ -21,7 +21,7 @@ export const login = createAsyncThunk(
                 },
             }
             const {data} = await axios.post(
-                `${import.meta.env.VITE_BACKEND_URL}/auth/login`,
+                `${import.meta.env.VITE_BACKEND_URL}/user/auth/login`,
                 {email, password},
                 config
             )
