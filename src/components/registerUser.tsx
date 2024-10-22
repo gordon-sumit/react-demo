@@ -14,6 +14,7 @@ import {faFacebook, faGoogle} from "@fortawesome/free-brands-svg-icons";
 import {faRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import {useGoogleLogin} from "@react-oauth/google";
 import {saveToken} from "../store/reducer/auth";
+import Loader from "./loader";
 
 type RegisterEntity = {
     registerInfo: {
@@ -77,6 +78,7 @@ export default function () {
 
 
     return <div className="container m-auto">
+        {loader && <Loader/>}
         <div className="logo">
             <img src="logo.png" alt="logo"/>
         </div>
@@ -139,10 +141,10 @@ export default function () {
                     className="bg-danger-subtle border border-danger-subtle p-3 rounded-3 text-danger-emphasis mb-4">
                     Fields are required!
                 </div>}
-                {loader && <div
-                    className="bg-info-subtle border border-info-subtle p-3 rounded-3 text-info-emphasis mb-4">
-                    Loading...!
-                </div>}
+                {/*{loader && <div*/}
+                {/*    className="bg-info-subtle border border-info-subtle p-3 rounded-3 text-info-emphasis mb-4">*/}
+                {/*    Loading...!*/}
+                {/*</div>}*/}
                 <Button variant="outline-success" type="submit"><FontAwesomeIcon
                     icon={faUserPlus}/> Register</Button>
             </form>

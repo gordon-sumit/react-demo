@@ -1,5 +1,5 @@
 import {createEntityAdapter, createSlice} from "@reduxjs/toolkit";
-import {doRegister} from "../actions/register";
+import {doRegister, fetchGoogleProfile} from "../actions/register";
 import {useDispatch} from "react-redux";
 import {fetchUserProfiles} from "../actions/profile";
 
@@ -23,6 +23,13 @@ const registerReducer = createSlice({
             state.loader = true
         })
         builder.addCase(doRegister.fulfilled, (state, action) => {
+            state.loader = false
+        })
+
+        builder.addCase(fetchGoogleProfile.pending, (state, action) => {
+            state.loader = true
+        })
+        builder.addCase(fetchGoogleProfile.fulfilled, (state, action) => {
             state.loader = false
         })
     },
