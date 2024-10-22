@@ -35,7 +35,7 @@ const Login = () => {
 
     const googleLogin = useGoogleLogin({
         onSuccess: tokenResponse => {
-            console.log('tokenResponse', tokenResponse)
+            console.log('tokenResponseo', tokenResponse)
             dispatch(saveToken(tokenResponse.access_token))
         },
     });
