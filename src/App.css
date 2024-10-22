@@ -14,7 +14,6 @@
     width: 100%;
 }
 .login-singup-container .container .card{
-    width: 460px;
     margin: auto;
 }
 
@@ -483,8 +482,18 @@ ul.options-group li svg{
     color: #333;
 }
 
+
+@media (min-width: 700px) {
+    .login-singup-container .container .card {
+        width: 460px;
+    }
+}
+
 /* Responsive styling */
 @media (max-width: 500px) {
+    .login-singup-container{
+        padding-bottom: 46px;
+    }
     .qty-btn {
         width: 35px;
         height: 35px;
