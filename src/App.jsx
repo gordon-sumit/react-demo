@@ -16,10 +16,9 @@ function App() {
     },[userToken])
 
     if (!userToken) {
-        return <div className='container mt-3'>
+        return <div className="login-singup-container">
             <Routes>
-            <Route path='/' element={<Navigate to={'/login'}/>} />
-        </Routes>
+            <Route path='/' element={<Navigate to={'/login'}/>} /></Routes>
             <Outlet/>
         </div>
     }

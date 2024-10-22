@@ -1,14 +1,19 @@
 import {Button} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import {validateData} from "../store/reducer/registerReducer";
-import {doRegister} from "../store/actions/register";
+import {doRegister, fetchGoogleProfile} from "../store/actions/register";
 import {useEffect, useState} from "react";
 import {SubmitHandler, useForm} from "react-hook-form";
 import register from "./register";
 import {fetchUsers} from "../store/actions/login";
 import {profileData} from "../store/reducer/profileReducers";
 import {fetchUserProfiles} from "../store/actions/profile";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faFacebook, faGoogle} from "@fortawesome/free-brands-svg-icons";
+import {faRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
+import {useGoogleLogin} from "@react-oauth/google";
+import {saveToken} from "../store/reducer/auth";
 
 type RegisterEntity = {
     registerInfo: {
@@ -52,84 +57,104 @@ export default function () {
     const {loader} = useSelector(state => state.root.registerReducer)
     const formValues = watch()
 
-    useEffect(()=>{
-        if(userToken){
+    useEffect(() => {
+        if (userToken) {
             navigate('/')
         }
-    },[userToken]);
+    }, [userToken]);
 
     const onSubmit = (data: RegisterEntity) => {
         if (data) {
-            dispatch(doRegister(data, 'pp'))
+            dispatch(doRegister(data))
             reset();
         }
     }
+    const googleSignUp = useGoogleLogin({
+        onSuccess: tokenResponse => {
+            dispatch(fetchGoogleProfile(tokenResponse.access_token))
+        },
+    });
 
 
-    return <div>
-        <h2>Register Here</h2>
-        <form noValidate onSubmit={handleSubmit(onSubmit)}>
-            <div className={`${formValues.firstName ? "was-validated" : ''} needs-validation mb-3`}>
-                <label className="form-label" htmlFor="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName"
-                       className={`${errors.firstName ? 'is-invalid' : ""} form-control`}
-                       {...register('firstName', {required: true})}
-                />
-            </div>
-            <div className="mb-3">
-                <label className="form-label" htmlFor="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName"
-                       className={`form-control`}
-                       {...register('lastName')}
-                />
-            </div>
-            <div className={`${formValues.email ? "was-validated" : ''} needs-validation mb-3`}>
-                <label className="form-label" htmlFor="email">Email</label>
-                <input type="text" id="email" name="email"
-                       className={`${errors.email ? 'is-invalid' : ""} form-control`}
-                       {...register('email', {
-                           required: true,
-                           onChange: (e) => validateEmail(e.target.value, setError, clearErrors)
-                       })}
-                />
-            </div>
-            <div className="mb-3">
-                <label className="form-label" htmlFor="phone">Phone</label>
-                <input type="text" id="phone" name="phone"
-                       className={`form-control`}
-                       {...register('phone')}
-                />
-            </div>
+    return <div className="container m-auto">
+        <div className="logo">
+            <img src="logo.png" alt="logo"/>
+        </div>
+        <div className="card p-5">
+            <h2>Register Here</h2>
+            <form noValidate onSubmit={handleSubmit(onSubmit)}>
+                <div className={`${formValues.firstName ? "was-validated" : ''} needs-validation mb-3`}>
+                    <label className="form-label" htmlFor="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName"
+                           className={`${errors.firstName ? 'is-invalid' : ""} form-control`}
+                           {...register('firstName', {required: true})}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label" htmlFor="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName"
+                           className={`form-control`}
+                           {...register('lastName')}
+                    />
+                </div>
+                <div className={`${formValues.email ? "was-validated" : ''} needs-validation mb-3`}>
+                    <label className="form-label" htmlFor="email">Email</label>
+                    <input type="text" id="email" name="email"
+                           className={`${errors.email ? 'is-invalid' : ""} form-control`}
+                           {...register('email', {
+                               required: true,
+                               onChange: (e) => validateEmail(e.target.value, setError, clearErrors)
+                           })}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label" htmlFor="phone">Phone</label>
+                    <input type="text" id="phone" name="phone"
+                           className={`form-control`}
+                           {...register('phone')}
+                    />
+                </div>
 
-            <div className="mb-3">
-                <label className="form-label" htmlFor="address">Address</label>
-                <input type="text" id="address" name="address"
-                       className={`form-control`}
-                       {...register('address')}
-                />
-            </div>
-            <div className="mb-3">
-                <label className="form-label" htmlFor="password">Password</label>
-                <input type={passwordVisibility ? 'text' : 'password'} id="password" name="password"
-                       className={`form-control`}
-                       {...register('password')}
-                />
-            </div>
-            <div>
-                <label htmlFor="show-pass">Show Password</label>
-                <input type="checkbox" className="m-lg-2" id="show-pass" onClick={() => setPasswordVisibility(!passwordVisibility)}/>
-            </div>
+                <div className="mb-3">
+                    <label className="form-label" htmlFor="address">Address</label>
+                    <input type="text" id="address" name="address"
+                           className={`form-control`}
+                           {...register('address')}
+                    />
+                </div>
+                <div className="mb-3">
+                    <label className="form-label" htmlFor="password">Password</label>
+                    <input type={passwordVisibility ? 'text' : 'password'} id="password" name="password"
+                           className={`form-control`}
+                           {...register('password')}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="show-pass">Show Password</label>
+                    <input type="checkbox" className="m-lg-2" id="show-pass"
+                           onClick={() => setPasswordVisibility(!passwordVisibility)}/>
+                </div>
 
-            {(errors.firstName || errors.email) && <div
-                className="bg-danger-subtle border border-danger-subtle p-3 rounded-3 text-danger-emphasis mb-4">
-                Fields are required!
-            </div>}
-            {loader && <div
-                className="bg-info-subtle border border-info-subtle p-3 rounded-3 text-info-emphasis mb-4">
-                Loading...!
-            </div>}
-            <Button type="submit">Register</Button>
-        </form>
+                {(errors.firstName || errors.email) && <div
+                    className="bg-danger-subtle border border-danger-subtle p-3 rounded-3 text-danger-emphasis mb-4">
+                    Fields are required!
+                </div>}
+                {loader && <div
+                    className="bg-info-subtle border border-info-subtle p-3 rounded-3 text-info-emphasis mb-4">
+                    Loading...!
+                </div>}
+                <Button variant="outline-success" type="submit"><FontAwesomeIcon
+                    icon={faUserPlus}/> Register</Button>
+            </form>
+            <button className="btn btn-danger mt-2" onClick={() => googleSignUp()}><FontAwesomeIcon
+                icon={faGoogle}/> Register with Google
+            </button>
+            <button className="btn btn-primary mt-2"><FontAwesomeIcon icon={faFacebook}/> Register with Facebook</button>
+            <div className="or-option mt-2">Or</div>
+
+            <Link to={'/login'} className="btn btn-outline-primary mt-2"><FontAwesomeIcon
+                icon={faRightToBracket}/> Login</Link>
+        </div>
     </div>
 
 }

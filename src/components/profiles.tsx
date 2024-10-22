@@ -6,8 +6,9 @@ import {Table} from "react-bootstrap";
 export default function () {
     const dispatch = useDispatch();
     const {profiles} = useSelector(state => state.root.profileReducers)
+    const {userToken} = useSelector(state => state.root.auth)
     useEffect(() => {
-        dispatch(fetchUserProfiles())
+        dispatch(fetchUserProfiles(userToken))
     }, [dispatch])
 
     return <div>

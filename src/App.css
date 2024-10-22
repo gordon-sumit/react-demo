@@ -1,3 +1,82 @@
+/*login css*/
+.login-singup-container{
+    height: 100vh;
+    display: flex;
+    background: currentColor;
+}
+.login-singup-container .logo{
+    width: 100px;
+    text-align: center;
+    margin: auto;
+}
+
+.login-singup-container .logo img{
+    width: 100%;
+}
+.login-singup-container .container .card{
+    width: 460px;
+    margin: auto;
+}
+
+.card .or-option{
+    position: relative;
+    text-align: center;
+}
+.card .or-option:before,.card .or-option:after{
+    content: "";
+    position: absolute;
+    width: 158px;
+    margin: auto;
+    bottom: 0;
+    top: 2px;
+    height: 1px;
+    background: #000;
+}
+
+.card .or-option:before{
+    left: 0;
+}
+.card .or-option:after{
+    right: 0;
+}
+
+
+.login-singup-container .container .card button{
+    width: 100%;
+}
+
+.login-singup-container .card .login-signup-head{
+    text-align: center;
+}
+
+.card .title{
+    font-size: 1.7em !important;
+    position: relative;
+    font-family: 'circular';
+}
+.card .title::after{
+    content: "";
+    position: absolute;
+    width: 56px;
+    margin: auto;
+    bottom: 0;
+    top: 36px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #ff8d8d;
+}
+/*end login css*/
+
+
+
+
+
+
+
+
+
+
 .card.event-card {
     box-shadow: 2px 2px 16px 2px #ccc;
     max-width: 830px;

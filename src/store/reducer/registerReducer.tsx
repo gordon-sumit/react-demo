@@ -16,7 +16,7 @@ const registerReducer = createSlice({
         validateData: state => {
             state.loader = true
             return state;
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(doRegister.pending, (state, action) => {

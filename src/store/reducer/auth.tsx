@@ -10,8 +10,13 @@ const doLogin = createSlice({
             localStorage.removeItem('userToken')
             return state;
         },
-        saveToken: state => {
-            state.userToken = localStorage.getItem('userToken');
+        saveToken: (state, {payload}) => {
+            if (payload) {
+                localStorage.setItem('userToken', payload);
+                state.userToken = payload;
+            } else {
+                state.userToken = localStorage.getItem('userToken');
+             }
             return state;
         }
     },
