@@ -10,10 +10,10 @@ import {Provider} from "react-redux";
 import {createBrowserRouter, Navigate, redirect, RouterProvider} from "react-router-dom";
 import Login from "./components/Auth/login";
 import RegisterUser from "./components/registerUser";
-import Profiles from "./components/profiles";
 import PrivateRoute from "./components/privateRoute";
 import MyVeggies from "./components/myVeggies";
 import {GoogleOAuthProvider} from "@react-oauth/google";
+import Profiles from "./components/profile/profiles";
 
 
 const accessToken = localStorage.getItem('userToken');

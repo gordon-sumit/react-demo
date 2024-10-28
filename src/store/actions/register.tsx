@@ -6,15 +6,37 @@ import {saveToken} from "../reducer/auth";
 export const doRegister = createAsyncThunk(
     'doRegister',
     async (formData, {dispatch}) => {
-        return await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user`, formData, {
+        const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user`, formData, {
             headers: {}
-        }).then().then((res) => {
-            console.log(res)
-            dispatch(saveToken(token))
-        })
+        });
+        return data;
+        //     .then().then((res) => {
+        //     console.log(res)
+        //     dispatch(saveToken(res.data.access_token))
+        // })
     },
 );
 
+export const confirmRegistration = createAsyncThunk(
+    'doRegister/confirm',
+    async ({username, code}, {dispatch}) => {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }
+      try {
+          const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/confirm-register`, {
+              username,
+              code
+          }, config);
+          return data;
+      }catch (e) {
+          console.log(e,'khghjhjfhjfh')
+          throw new Error(e.response.data.message);
+      }
+    }
+);
 
 export const fetchGoogleProfile = createAsyncThunk(
     'doGoogleRegister',

@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {initialState, login} from "../actions/login";
+import {initialState, login, validateMFA} from "../actions/login";
 
 const doLogin = createSlice({
     name: 'dologin',
@@ -16,9 +16,16 @@ const doLogin = createSlice({
                 state.userToken = payload;
             } else {
                 state.userToken = localStorage.getItem('userToken');
-             }
+            }
             return state;
-        }
+        },
+        setAuthChallenge: (state, {payload}) => {
+            if (payload) {
+                state.authChallenge = payload.ChallengeName;
+                state.session = payload.Session;
+            }
+            return state;
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -26,16 +33,37 @@ const doLogin = createSlice({
                 // Handle the pending state here
                 state.loading = true;
             })
-            .addCase(login.fulfilled, (state, action) => {
+            .addCase(validateMFA.pending, (state) => {
+                // Handle the pending state here
+                state.loading = true;
+                state.userToken = null;
+            })
+            .addCase(login.fulfilled, (state, {payload}) => {
+                if (payload) {
+                    state.authChallenge = payload.ChallengeName;
+                    state.session = payload.Session;
+                    if (payload.qr) {
+                        state.qr = payload.qr;
+                    }
+                    state.loading = false;
+                }
+            })
+            .addCase(validateMFA.fulfilled, (state, action) => {
                 // Handle the fulfilled state here
-                console.log(action, 'sddhsdsh')
-                state.userToken = action.payload.access_token;
+                if (action.payload.AuthenticationResult.AccessToken) {
+                    state.userToken = action.payload.AuthenticationResult.AccessToken;
+                    localStorage.setItem('userToken', action.payload.AuthenticationResult.AccessToken)
+                    state.loading = false;
+                    state.authChallenge = null;
+                    state.session = null;
+                }
             })
             .addCase(login.rejected, (state, action) => {
-                // Handle the rejected state here
+                console.log(action,'ooooooooooo')
+                state.loading = false;
             })
     },
 });
 
-export const {saveToken, removeToken} = doLogin.actions;
+export const {saveToken, setAuthChallenge, removeToken} = doLogin.actions;
 export default doLogin.reducer;
