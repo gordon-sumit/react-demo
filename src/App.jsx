@@ -8,11 +8,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {saveToken} from "./store/reducer/auth";
 
 function App() {
-    const dispatch = useDispatch();
-    const {userToken} = useSelector((state) => state.root.auth);
+     const dispatch = useDispatch();
+     const {userToken} = useSelector((state) => state.root.auth);
 
     useEffect(()=>{
-        dispatch(saveToken())
+        if(!userToken){
+            dispatch(saveToken())
+        }
     },[userToken])
 
     if (!userToken) {

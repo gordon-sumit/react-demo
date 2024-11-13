@@ -1,17 +1,19 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "axios";
-import {isError} from "../reducer/errorReducer";
 import {isSuccess} from "../reducer/form";
 import {emptyBucket, setCurrentPage} from "../reducer/vegetable";
 
 
 export const myVegetables = createAsyncThunk(
     'my-veggies/get',
-    async ({page, order, search}, {dispatch}) => {
+    async ({page, order, search}, {dispatch, getState}) => {
+        const state = getState();
+        const {userToken, temporaryCredentials} = state && state.root && state.root.auth;
         const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/vegetable/${page ? page : 1}/${order}${search ? `/${search}` : ''}`,
             {
                 headers: {
-                    'ngrok-skip-browser-warning': 'abc'
+                    Authorization: `Bearer ${userToken}`,
+                    temporaryCredentials: JSON.stringify(temporaryCredentials.Credentials)
                 }
             }
         )
@@ -27,18 +29,17 @@ export const removeItemFromDefault = createAsyncThunk('my-veggies/delete',
                 'Content-Type': 'application/json',
             },
         }
-        const {data} = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/vegetable/delete/${id}`,config);
-        if(data){
-            console.log('ppppppp',data)
+        const {data} = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/vegetable/delete/${id}`, config);
+        if (data) {
             dispatch(isSuccess('Item Deleted!'))
-            dispatch(myVegetables({page:1}))
+            dispatch(myVegetables({page: 1, order: 'desc', search: ''}))
         }
         return data;
     });
 
 export const myVegetableActions = createAsyncThunk(
     'my-veggies/send',
-    async ({myData,sendType}, {dispatch}) => {
+    async ({myData, sendType}, {dispatch}) => {
         try {
             if (!myData.length) return;
             const config = {
@@ -64,12 +65,16 @@ export const myVegetableActions = createAsyncThunk(
 
 export const addVegetableAction = createAsyncThunk(
     'my-veggies/create',
-    async (myData, {dispatch}) => {
+    async (myData, {dispatch, getState}) => {
         try {
+            const state = getState();
+            const {userToken, temporaryCredentials} = state && state.root && state.root.auth;
             const config = {
                 headers: {
+                    Authorization: `Bearer ${userToken}`,
+                    temporaryCredentials: JSON.stringify(temporaryCredentials.Credentials),
                     'Content-Type': 'multipart/form-data',
-                },
+                }
             }
             const {data} = await axios.post(
                 `${import.meta.env.VITE_BACKEND_URL}/vegetable/add`,
@@ -78,7 +83,7 @@ export const addVegetableAction = createAsyncThunk(
             )
             if (data.filename) {
                 dispatch(isSuccess(data.message))
-                dispatch(myVegetables({page: 1, search: ''}))
+                dispatch(myVegetables({page: 1, order: 'desc', search: ''}))
             }
             return data;
         } catch (error) {

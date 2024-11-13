@@ -66,11 +66,11 @@ export default function () {
         }
     }, [userToken]);
 
-    useEffect(()=>{
-        if(codeDeliveryDetails.redirect){
+    useEffect(() => {
+        if (codeDeliveryDetails.redirect) {
             navigate('/login')
         }
-    },[codeDeliveryDetails])
+    }, [codeDeliveryDetails])
 
     const onSubmit = (data: RegisterEntity) => {
         if (data) {
@@ -103,7 +103,8 @@ export default function () {
                 <Button variant="outline-success" type="submit">
                     <FontAwesomeIcon icon={faUserPlus}/> Complete registration
                 </Button>
-                {codeDeliveryDetails.error && <p className="text-danger text-center fa-sm mt-3">{codeDeliveryDetails.error}</p>}
+                {codeDeliveryDetails.error &&
+                    <p className="text-danger text-center fa-sm mt-3">{codeDeliveryDetails.error}</p>}
             </Form>
         </div>
     }
@@ -170,14 +171,15 @@ export default function () {
                                onClick={() => setPasswordVisibility(!passwordVisibility)}/>
                     </div>
 
+                    <div className="mb-3">
+                        <label className="form-label" htmlFor="2fa-mfa">MFA Option</label>
+                        <input type="checkbox" name="mfa" {...register('mfaOption')} id="2fa-mfa" />
+                    </div>
+
                     {(errors.firstName || errors.email) && <div
                         className="bg-danger-subtle border border-danger-subtle p-3 rounded-3 text-danger-emphasis mb-4">
                         Fields are required!
                     </div>}
-                    {/*{loader && <div*/}
-                    {/*    className="bg-info-subtle border border-info-subtle p-3 rounded-3 text-info-emphasis mb-4">*/}
-                    {/*    Loading...!*/}
-                    {/*</div>}*/}
                     <Button variant="outline-success" type="submit"><FontAwesomeIcon
                         icon={faUserPlus}/> Register</Button>
                 </form>

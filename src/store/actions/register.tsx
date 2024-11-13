@@ -10,10 +10,6 @@ export const doRegister = createAsyncThunk(
             headers: {}
         });
         return data;
-        //     .then().then((res) => {
-        //     console.log(res)
-        //     dispatch(saveToken(res.data.access_token))
-        // })
     },
 );
 

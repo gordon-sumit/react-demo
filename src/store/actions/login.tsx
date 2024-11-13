@@ -19,11 +19,10 @@ export const login = createAsyncThunk(
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
-                    'ngrok-skip-browser-warning': 'abc'
                 },
             }
             const {data} = await axios.post(
-                `${import.meta.env.VITE_BACKEND_URL}/user/auth/login`,
+                `${import.meta.env.VITE_BACKEND_URL}/user/login`,
                 {email, password},
                 config
             )
@@ -44,7 +43,6 @@ export const validateMFA = createAsyncThunk(
     async (formData, {dispatch, getState}) => {
         const state = getState();
         const {authChallenge} = state && state.root && state.root.auth;
-        console.log(authChallenge, 'challengeName', state.root.auth, 'state')
         try {
             const config = {
                 headers: {
@@ -87,6 +85,8 @@ export const initialState = {
     loading: false,
     userInfo: null,
     userToken: null,
+    idToken:null,
+    temporaryCredentials:null,
     error: null,
     success: false,
     authChallenge: null,

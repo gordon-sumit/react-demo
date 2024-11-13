@@ -9,15 +9,16 @@ import {Link, Navigate, useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFacebook, faGoogle} from "@fortawesome/free-brands-svg-icons";
 import {faRightToBracket, faUserPlus} from "@fortawesome/free-solid-svg-icons";
-import {useGoogleLogin} from "@react-oauth/google";
+import {GoogleLogin, useGoogleLogin, useGoogleOneTapLogin} from "@react-oauth/google";
 import {saveToken} from "../../store/reducer/auth";
 import Loader from "../loader";
+import {QRCodeSVG} from "qrcode.react";
 
 const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {error} = useSelector((state) => state.root.errorReducer);
-    const {userToken, authChallenge, session, loading,qr} = useSelector((state) => state.root.auth);
+    const {userToken, authChallenge, session, loading, qr} = useSelector((state) => state.root.auth);
     const {
         register,
         watch,
@@ -37,7 +38,7 @@ const Login = () => {
 
     const googleLogin = useGoogleLogin({
         onSuccess: tokenResponse => {
-            dispatch(saveToken(tokenResponse.access_token))
+            console.log(tokenResponse, 'tokenResponse')
         },
     });
 
@@ -50,7 +51,7 @@ const Login = () => {
     const MFACodeForm = () => {
         return <div className="card p-5">
             {!!qr && <div className="thumbnail">
-                <img src={qr} alt="MFA_QR"/>
+                <QRCodeSVG value={qr} />
                 <p className="text-center">Scan above QR and enter the code</p>
             </div>}
             <h2 className="login-signup-head title mb-4">MFA Code</h2>
@@ -96,7 +97,7 @@ const Login = () => {
                         <FontAwesomeIcon icon={faRightToBracket}/> Login
                     </Button>
                 </Form>
-                <button className="btn btn-danger mt-2" onClick={() => googleLogin()}><FontAwesomeIcon
+                <button className="btn btn-danger mt-2" onClick={googleLogin}><FontAwesomeIcon
                     icon={faGoogle}/> Login with Google
                 </button>
                 <button className="btn btn-primary mt-2"><FontAwesomeIcon icon={faFacebook}/> Login with Facebook

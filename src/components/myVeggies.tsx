@@ -1,4 +1,4 @@
-import {Fragment, useEffect, useState} from "react";
+import {Fragment, useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {myVegetableActions, myVegetables, removeItemFromDefault} from "../store/actions/myVegetable.actions";
 import AddVeggies from "./addVeggies";
@@ -39,6 +39,7 @@ export default function () {
     const [sendOption, setSendOption] = useState('whatsapp');
     const [search, setSearch] = useState('');
     const [order, setOrder] = useState('desc');
+    const isMediaLoaded = useRef(false);
 
     const onAddVegetableItem = (item) => {
         const itemExists = myBucket.find(bucketItem => bucketItem.id === item.id);
@@ -101,7 +102,10 @@ export default function () {
     }, [message])
 
     useEffect(() => {
-        dispatch(myVegetables({page: 1, order, search}))
+        if(!isMediaLoaded.current){
+            isMediaLoaded.current = true;
+            dispatch(myVegetables({page: 1, order, search}))
+        }
     }, [order, search]);
 
     const paginate = (page) => {
@@ -171,7 +175,7 @@ export default function () {
                             return <li draggable={true} onDragStart={() => dragStart(item)} key={index}
                                        className="list-group-item ">
                                 <div className="thumbnail">
-                                    <img src={item.thumbnail}
+                                    <img src={item.singedUrl}
                                          onClick={() => onAddVegetableItem(item)}
                                          alt={item.name}/>
                                 </div>
@@ -200,7 +204,7 @@ export default function () {
                                 myBucket.map((item, index) => {
                                     return <li key={index} className="list-group-item position-relative">
                                         <div className="thumbnail">
-                                            <img src={item.thumbnail}
+                                            <img src={item.singedUrl}
                                                  alt=""/>
                                         </div>
                                         <div className="title">{item.name}</div>
